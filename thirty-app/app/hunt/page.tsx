@@ -41,8 +41,8 @@ export default function Hunt() {
   console.log("Team ID from URL:", teamId);
   // Remember that the Convex APIs are async. If you want to chain together 2 fetches,
   // I think you have to create a new Convex API that chains promises.
-  // Also you can't use the returned value immediately in JS below... I think you may only
-  // be able to use it in the React HTML.
+  // Or you just have to handle the case where the data is not ready yet here in the
+  // React component. Remember that it's a hook, so once it *is* ready, the component will re-render with the new data.
   const task = useQuery(api.tasks.getTaskForTeam, {teamId: teamId ? parseInt(teamId) : 0});
 
   // console.log("task: ", task);
@@ -62,8 +62,8 @@ export default function Hunt() {
         <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
           <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
             {task.textHint && task.textHint.length > 0 && <p>{task.textHint}</p>}
-            {task.useImageHint && <img src={task.imageHint} alt="Hint" />}
-            {/* {task.imageHint && task.imageHint.length > 0 && <p>{task.imageHint}</p>} */}
+            {/* {task.useImageHint && <img src={task.imageHint} alt="Hint" />} */}
+            {task.imageHint && task.imageHint.length > 0 && <p>{task.imageHint}</p>}
           </h1>
           <Form action="/hunt">
             {/* On submission, the input value will be appended to
